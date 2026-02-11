@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>For You 💗</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500&display=swap" rel="stylesheet">
+
+<style>
+* {
+    box-sizing: border-box;
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    color: #fff;
+    overflow-x: hidden;
+    position: relative;
+    height: 100vh;
+    background: linear-gradient(180deg, #ffc0cb, #ff69b4);
+}
+
+/* Canvas for roses */
+#roseCanvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -1;
+}
+
+/* Petals animation */
+.petal {
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    background: pink;
+    border-radius: 50%;
+    opacity: 0.7;
+    animation: fall linear infinite;
+}
+
+@keyframes fall {
+    0% { transform: translateY(-50px) rotate(0deg); opacity: 0.7; }
+    100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+}
+
+/* Intro screen */
+.intro {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 20px;
+}
+
+.intro h1 {
+    font-size: 3rem;
+    text-shadow: 0 0 15px #fff;
+}
+
+.intro button {
+    margin-top: 25px;
+    padding: 16px 40px;
+    border: none;
+    border-radius: 50px;
+    background: white;
+    color: #ff1493;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+.intro button:hover {
+    transform: scale(1.1);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+}
+
+/* Timeline */
+.timeline {
+    display: none;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 50px 20px;
+}
+
+/* Compact grid for memories */
+.memories-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    justify-items: center;
+}
+
+.memory {
+    background: rgba(255,255,255,0.15);
+    padding: 12px;
+    border-radius: 25px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+    opacity: 0;
+    transform: scale(0.95) translateY(30px);
+    transition: all 0.6s ease;
+}
+
+.memory img,
+.memory video {
+    width: 100%;
+    border-radius: 20px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.memory img:hover,
+.memory video:hover {
+    transform: scale(1.05);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.6);
+}
+
+.memory p {
+    margin-top: 10px;
+    font-size: 1rem;
+    text-align: center;
+}
+
+/* Valentine Box */
+.valentine-box {
+    text-align: center;
+    margin: 20px 0;
+}
+.valentine-box h2 {
+    font-size: 1.8rem;
+    margin-bottom: 15px;
+    text-shadow: 0 0 10px #fff;
+}
+.valentine-box button {
+    margin: 10px;
+    padding: 10px 25px;
+    border-radius: 50px;
+    border: none;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: transform 0.3s;
+}
+
+/* Ending letter */
+.letter {
+    margin-top: 50px;
+    background: rgba(255,255,255,0.25);
+    padding: 35px;
+    border-radius: 30px;
+    backdrop-filter: blur(12px);
+    text-align: center;
+    font-size: 1.1rem;
+    box-shadow: 0 12px 35px rgba(0,0,0,0.3);
+    border: 2px solid #ff69b4;
+}
+
+/* Animations */
+@keyframes fadeUp {
+    from { opacity: 0; transform: scale(0.95) translateY(30px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+}
+</style>
+</head>
+<body>
+
+<canvas id="roseCanvas"></canvas>
+<div id="petals"></div>
+
+<!-- INTRO -->
+<div class="intro" id="intro">
+    <h1>Hey Love 💗</h1>
+    <p>I made this just for you</p>
+    <button onclick="start()">Tap to begin ✨</button>
+</div>
+
+<!-- TIMELINE -->
+<div class="timeline" id="timeline">
+
+    <div class="memories-grid">
+        <div class="memory">
+            <img src="photos/VideoCapture_20260116-200758.jpg" alt="Memory 1">
+            <p>The smile that changed everything 💕</p>
+
+            <!-- Valentine Box under first memory -->
+            <div class="valentine-box">
+                <h2 id="valentineText">Will you be my Valentine? 💗</h2>
+                <button id="yesBtn" style="background:#ff1493; color:white;">Yes 💖</button>
+                <button id="noBtn" style="background:white; color:#ff1493;">No 😢</button>
+            </div>
+        </div>
+
+        <div class="memory">
+            <video controls>
+                <source src="videos/VID-20251120-WA0020.mp4" type="video/mp4">
+            </video>
+            <p>A moment I’ll always replay in my heart 🎥💗</p>
+        </div>
+
+        <div class="memory">
+            <img src="photos/VideoCapture_20260116-200758.jpg" alt="Memory 2">
+            <p>Every memory with you feels like home 🌸</p>
+        </div>
+    </div>
+
+    <div class="letter">
+        <p>
+            Loving you is my favorite thing to do.<br>
+            Thank you for being my peace, my joy,<br>
+            and my forever person.<br><br>
+            With all my heart,<br>
+            <b>KG 💗</b>
+        </p>
+    </div>
+
+</div>
+
+<!-- Confetti Canvas -->
+<canvas id="confettiCanvas" style="position:fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:1000;"></canvas>
+
+<!-- Background Music -->
+<audio id="music" loop>
+    <source src="https://cdn.pixabay.com/audio/2023/02/14/audio_2fbdcfe76c.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+// Petals animation
+function createPetals() {
+    const petalsContainer = document.getElementById("petals");
+    for (let i = 0; i < 30; i++) {
+        const petal = document.createElement("div");
+        petal.className = "petal";
+        petal.style.left = Math.random() * 100 + "vw";
+        petal.style.animationDuration = (5 + Math.random() * 5) + "s";
+        petal.style.width = (10 + Math.random() * 15) + "px";
+        petal.style.height = petal.style.width;
+        petalsContainer.appendChild(petal);
+    }
+}
+
+// Roses following mouse
+const canvasRose = document.getElementById("roseCanvas");
+const ctxRose = canvasRose.getContext("2d");
+let roses = [];
+canvasRose.width = window.innerWidth;
+canvasRose.height = window.innerHeight;
+
+const roseImg = new Image();
+roseImg.src = "photos/pink_rose.png"; // replace with your high-res rose
+
+document.addEventListener("mousemove", e=>{
+    roses.push({x:e.clientX, y:e.clientY, size:50 + Math.random()*50, alpha:1});
+});
+
+function animateRoses(){
+    ctxRose.clearRect(0,0,canvasRose.width, canvasRose.height);
+    for(let i=0;i<roses.length;i++){
+        const r = roses[i];
+        ctxRose.globalAlpha = r.alpha;
+        ctxRose.drawImage(roseImg, r.x - r.size/2, r.y - r.size/2, r.size, r.size);
+        r.alpha -= 0.01;
+        r.y -= 0.2;
+        if(r.alpha <=0) roses.splice(i,1);
+    }
+    requestAnimationFrame(animateRoses);
+}
+animateRoses();
+
+// Valentine interaction
+const noBtn = document.getElementById('noBtn');
+noBtn.addEventListener('mouseover', () => {
+    const maxX = window.innerWidth - noBtn.offsetWidth;
+    const maxY = window.innerHeight - noBtn.offsetHeight;
+    const randX = Math.random() * maxX;
+    const randY = Math.random() * maxY;
+    noBtn.style.position = 'absolute';
+    noBtn.style.left = randX + 'px';
+    noBtn.style.top = randY + 'px';
+});
+
+const yesBtn = document.getElementById('yesBtn');
+const canvasConfetti = document.getElementById('confettiCanvas');
+const ctxConfetti = canvasConfetti.getContext('2d');
+canvasConfetti.width = window.innerWidth;
+canvasConfetti.height = window.innerHeight;
+let confetti = [];
+
+function ConfettiPiece(){
+    this.x = Math.random()*canvasConfetti.width;
+    this.y = Math.random()*canvasConfetti.height - canvasConfetti.height;
+    this.size = 5 + Math.random()*5;
+    this.speed = 2 + Math.random()*3;
+    this.color = `hsl(${Math.random()*360},100%,50%)`;
+}
+ConfettiPiece.prototype.update = function(){
+    this.y += this.speed;
+    if(this.y > canvasConfetti.height) this.y = -this.size;
+}
+ConfettiPiece.prototype.draw = function(){
+    ctxConfetti.fillStyle = this.color;
+    ctxConfetti.beginPath();
+    ctxConfetti.arc(this.x,this.y,this.size,0,Math.PI*2);
+    ctxConfetti.fill();
+}
+
+function animateConfetti(){
+    ctxConfetti.clearRect(0,0,canvasConfetti.width,canvasConfetti.height);
+    confetti.forEach(c=>{
+        c.update();
+        c.draw();
+    });
+    requestAnimationFrame(animateConfetti);
+}
+
+yesBtn.addEventListener('click', () => {
+    for(let i=0;i<150;i++) confetti.push(new ConfettiPiece());
+    animateConfetti();
+    alert("Yay! Happy Valentine's Day! 💖🎉");
+});
+
+// Resize canvases
+window.addEventListener('resize', ()=>{
+    canvasRose.width = window.innerWidth;
+    canvasRose.height = window.innerHeight;
+    canvasConfetti.width = window.innerWidth;
+    canvasConfetti.height = window.innerHeight;
+});
+
+// Start experience
+function start() {
+    document.getElementById("intro").style.display = "none";
+    document.getElementById("timeline").style.display = "block";
+    document.getElementById("music").play();
+    createPetals();
+
+    const memories = document.querySelectorAll(".memory");
+    memories.forEach((m, i) => {
+        setTimeout(() => {
+            m.style.opacity = 1;
+            m.style.transform = "scale(1) translateY(0)";
+        }, i * 400);
+    });
+}
+</script>
+</body>
+</html>
